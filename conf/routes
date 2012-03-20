@@ -7,3 +7,7 @@ GET     /                           controllers.Application.index
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
+
+# Routes for test
+GET     /test/insert/normal/:name   controllers.Application.insertNormal(name: String)
+GET     /test/insert/token/:name   controllers.Application.insertToken(name: String)
