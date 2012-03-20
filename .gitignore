@@ -10,5 +10,6 @@ dist
 /.project
 /.settings
 /.cache
+/.target
 *~
 
