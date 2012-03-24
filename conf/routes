@@ -10,6 +10,7 @@ GET     /assets/*file               controllers.Assets.at(path="/public", file)
 
 # Routes for test
 GET     /test/insert/normal/:name   controllers.Application.insertNormal(name: String)
-GET     /test/insert/token/:name   controllers.Application.insertToken(name: String)
-POST    /test/replace/image        controllers.Application.replaceImage
-GET     /test/image/:id            controllers.Application.getImage(id: Long)
+GET     /test/insert/token/:name    controllers.Application.insertToken(name: String)
+POST    /test/replace/image/:id     controllers.Application.replaceImage(id: Long)
+GET     /test/image/:id             controllers.Application.getImage(id: Long)
+GET     /test/cardmaster/:id        controllers.Application.getCardMaster(id: Long)

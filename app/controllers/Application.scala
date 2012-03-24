@@ -9,6 +9,8 @@ import org.nisshiee.mtghorde.model.Token
 import scalax.io.Resource
 import org.nisshiee.mtghorde.model.CardImage
 import org.nisshiee.mtghorde.model.CardImage
+import org.nisshiee.mtghorde.model.CardMaster
+import views.html.viewCard
 
 object Application extends Controller {
 
@@ -26,18 +28,15 @@ object Application extends Controller {
     Ok("new card id: " |+| id.shows)
   }
 
-  def replaceImage = Action(parse.multipartFormData) { req =>
+  def replaceImage(id: Long) = Action(parse.multipartFormData) { req =>
     val result = for {
       file <- req.body.file("image")
-      idStr <- req.body.dataParts.get("id") >>= { _.headOption }
-      id <- idStr.parseLong.toOption
       contentType <- file.contentType
     } yield {
       val binary = Resource.fromFile(file.ref.file).byteArray
       CardImage.replace(id, contentType, binary) match {
-        case CardImage.Insert => Ok("inserted")
-        case CardImage.Update => Ok("updated")
         case CardImage.Error => BadRequest("error")
+        case _ => Redirect(routes.Application.getCardMaster(id))
       }
     }
 
@@ -48,10 +47,15 @@ object Application extends Controller {
     CardImage.select(id) map { cardImage =>
       Ok(cardImage.binary)
         .as(cardImage.contentType)
-        .withHeaders("Cache-Control" -> "public, max-age=3600")
     } getOrElse {
       Redirect(routes.Application.index)
     }
+  }
+
+  def getCardMaster(id: Long) = Action {
+    CardMaster.select(id)
+      .map { c => Ok(views.html.viewCard(c)) }
+      .getOrElse { Redirect(routes.Application.index) }
   }
 
 }
