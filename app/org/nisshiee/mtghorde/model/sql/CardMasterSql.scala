@@ -14,4 +14,14 @@ INSERT INTO card_master
   val insertNormalCardSql = insertCardMasterSql.on("card_type" -> 1)
 
   val insertTokenSql = insertCardMasterSql.on("card_type" -> 2)
+  
+  val selectSql = SQL("""
+SELECT
+    id, card_type, name
+  FROM
+    card_master
+  WHERE
+    id = {id}
+;
+""")
 }

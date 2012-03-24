@@ -1,0 +1,30 @@
+@(card: org.nisshiee.mtghorde.model.CardMaster)
+
+@import org.nisshiee.mtghorde.model._
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>@card.name</title>
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
+        <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
+        <script src="@routes.Assets.at("javascripts/jquery-1.7.1.min.js")" type="text/javascript"></script>
+    </head>
+    <body>
+        <h1>@card.name</h1>
+        <du>
+            <dt>カード種別</dt>
+            @card match {
+                case _: NormalCard => { <dd>通常カード</dd> }
+                case _: Token      => { <dd>トークン</dd> }
+            }
+            <dt>画像</dt>
+            <dd><img src="@routes.Application.getImage(card.id)"></dd>
+        </du>
+        
+        <form action="@routes.Application.replaceImage(card.id).url" method="post" enctype="multipart/form-data">
+            <input type="file" name="image">
+            <input type="submit">
+        </form>
+    </body>
+</html>
